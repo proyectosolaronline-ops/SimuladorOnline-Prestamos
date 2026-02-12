@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Préstamos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 2rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .error {
+            background: #fee;
+            color: #c00;
+            padding: 1rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+        }
+
+        .value-display {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 1rem;
+            border: 2px solid #e9ecef;
+        }
+
+        .value-display .amount {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .value-display .label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e9ecef;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        select {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-family: 'Poppins', sans-serif;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .results {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 20px;
+            margin-top: 2rem;
+        }
+
+        .results h3 {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .result-item {
+            background: rgba(255,255,255,0.15);
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .result-item .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+
+        .result-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .result-item.highlight {
+            background: rgba(255,255,255,0.25);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .result-item.highlight .value {
+            font-size: 2rem;
+        }
+
+        .whatsapp-btn {
+            width: 100%;
+            padding: 1.25rem;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-btn:hover {
+            background: #20BA5A;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-btn:active {
+            transform: translateY(0);
+        }
+
+        .icon {
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 640px) {
+            body {
+                padding: 1rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card {
+                padding: 1.5rem;
+            }
+
+            .value-display .amount {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Configuración
+        const GOOGLE_SHEET_ID = '19Viesr9Lhy347A9L03J_RuxftUhBduaYsBY206IO6X8';
+        const WHATSAPP_NUMBER = '4424003376';
+
+        function App() {
+            const [parametros, setParametros] = useState(null);
+            const [loading, setLoading] = useState(true);
+            const [error, setError] = useState(null);
+            
+            const [capital, setCapital] = useState(5000);
+            const [meses, setMeses] = useState(3);
+            const [interes, setInteres] = useState(null);
+
+            // Cargar parámetros de Google Sheets
+            useEffect(() => {
+                cargarParametros();
+            }, []);
+
+            const cargarParametros = async () => {
+                try {
+                    const url = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Parametros`;
+                    const response = await fetch(url);
+                    const text = await response.text();
+                    const json = JSON.parse(text.substring(47).slice(0, -2));
+                    
+                    const rows = json.table.rows;
+                    const params = {};
+                    
+                    rows.forEach(row => {
+                        if (row.c[0] && row.c[1]) {
+                            const interes = parseFloat(row.c[0].v);
+                            const meses = parseInt(row.c[1].v);
+                            const capital = parseFloat(row.c[2].v);
+                            
+                            if (!params[capital]) params[capital] = {};
+                            if (!params[capital][meses]) params[capital][meses] = interes;
+                        }
+                    });
+                    
+                    setParametros(params);
+                    
+                    // Establecer valores iniciales
+                    const capitales = Object.keys(params).map(Number).sort((a,b) => a-b);
+                    const capitalInicial = capitales[0] || 5000;
+                    setCapital(capitalInicial);
+                    
+                    const mesesDisponibles = Object.keys(params[capitalInicial] || {}).map(Number).sort((a,b) => a-b);
+                    const mesesInicial = mesesDisponibles[0] || 3;
+                    setMeses(mesesInicial);
+                    setInteres(params[capitalInicial]?.[mesesInicial] || 0);
+                    
+                    setLoading(false);
+                } catch (err) {
+                    console.error('Error al cargar parámetros:', err);
+                    setError('No se pudieron cargar los parámetros. Usando valores por defecto.');
+                    setParametros({
+                        5000: { 3: 16, 6: 20, 9: 12 },
+                        10000: { 3: 16, 6: 20, 9: 12 }
+                    });
+                    setInteres(16);
+                    setLoading(false);
+                }
+            };
+
+            // Actualizar interés cuando cambian capital o meses
+            useEffect(() => {
+                if (parametros && parametros[capital] && parametros[capital][meses]) {
+                    setInteres(parametros[capital][meses]);
+                }
+            }, [capital, meses, parametros]);
+
+            // Cálculos
+            const calcularPrestamo = () => {
+                if (!interes) return null;
+
+                const tasaMensual = interes / 100;
+                const totalInteres = capital * tasaMensual * meses;
+                const totalPrestamo = capital + totalInteres;
+                const diasPrestamo = meses * 30;
+                const totalPorDia = totalPrestamo / diasPrestamo;
+
+                // Guardar en localStorage
+                const simulacion = {
+                    fecha: new Date().toISOString(),
+                    capital,
+                    meses,
+                    interes,
+                    totalInteres,
+                    totalPrestamo,
+                    diasPrestamo,
+                    totalPorDia
+                };
+                
+                const simulaciones = JSON.parse(localStorage.getItem('simulaciones') || '[]');
+                simulaciones.push(simulacion);
+                localStorage.setItem('simulaciones', JSON.stringify(simulaciones));
+
+                return {
+                    totalPorDia: totalPorDia.toFixed(2),
+                    diasPrestamo,
+                    meses,
+                    totalCapital: capital.toFixed(2),
+                    totalPrestamo: totalPrestamo.toFixed(2),
+                    totalInteres: totalInteres.toFixed(2)
+                };
+            };
+
+            const resultado = calcularPrestamo();
+
+            const enviarWhatsApp = () => {
+                if (!resultado) return;
+
+                const mensaje = `*SOLICITUD DE PRÉSTAMO*
+
+💰 *Capital Solicitado:* $${parseFloat(resultado.totalCapital).toLocaleString('es-MX')}
+📅 *Plazo:* ${resultado.meses} meses (${resultado.diasPrestamo} días)
+📊 *Tasa de Interés:* ${interes}%
+
+*DESGLOSE DEL PRÉSTAMO:*
+━━━━━━━━━━━━━━━━━━
+💵 Total a Pagar: $${parseFloat(resultado.totalPrestamo).toLocaleString('es-MX')}
+📈 Interés Total: $${parseFloat(resultado.totalInteres).toLocaleString('es-MX')}
+📆 Pago Diario: $${parseFloat(resultado.totalPorDia).toLocaleString('es-MX')}
+
+Deseo solicitar este préstamo.`;
+
+                const url = `https://wa.me/52${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+                window.open(url, '_blank');
+            };
+
+            if (loading) {
+                return <div className="loading">⏳ Cargando parámetros...</div>;
+            }
+
+            const capitalesDisponibles = parametros ? Object.keys(parametros).map(Number).sort((a,b) => a-b) : [];
+            const mesesDisponibles = parametros && parametros[capital] ? Object.keys(parametros[capital]).map(Number).sort((a,b) => a-b) : [];
+
+            return (
+                <div className="container">
+                    <div className="header">
+                        <h1>💰 Simulador de Préstamos</h1>
+                        <p>Calcula tu préstamo en segundos</p>
+                    </div>
+
+                    <div className="card">
+                        {error && <div className="error">{error}</div>}
+
+                        <div className="form-group">
+                            <label>💵 ¿Cuánto necesitas?</label>
+                            <div className="value-display">
+                                <div className="amount">${capital.toLocaleString('es-MX')}</div>
+                                <div className="label">Capital a solicitar</div>
+                            </div>
+                            {capitalesDisponibles.length > 0 && (
+                                <select 
+                                    value={capital} 
+                                    onChange={(e) => setCapital(Number(e.target.value))}
+                                >
+                                    {capitalesDisponibles.map(c => (
+                                        <option key={c} value={c}>
+                                            ${c.toLocaleString('es-MX')}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
+                        </div>
+
+                        <div className="form-group">
+                            <label>📅 ¿En cuántos meses?</label>
+                            <div className="value-display">
+                                <div className="amount">{meses}</div>
+                                <div className="label">Meses de plazo</div>
+                            </div>
+                            {mesesDisponibles.length > 0 && (
+                                <select 
+                                    value={meses} 
+                                    onChange={(e) => setMeses(Number(e.target.value))}
+                                >
+                                    {mesesDisponibles.map(m => (
+                                        <option key={m} value={m}>
+                                            {m} {m === 1 ? 'mes' : 'meses'}
+                                        </option>
+                                    ))}
+                                </select>
+                            )}
+                        </div>
+
+                        <div className="form-group">
+                            <label>📊 Tasa de interés aplicable</label>
+                            <div className="value-display">
+                                <div className="amount">{interes}%</div>
+                                <div className="label">Mensual</div>
+                            </div>
+                        </div>
+
+                        {resultado && (
+                            <div className="results">
+                                <h3>📋 Resumen de tu Préstamo</h3>
+                                
+                                <div className="result-item highlight">
+                                    <div className="label">💰 Total a Pagar</div>
+                                    <div className="value">${parseFloat(resultado.totalPrestamo).toLocaleString('es-MX')}</div>
+                                </div>
+
+                                <div className="result-item">
+                                    <div className="label">📆 Pago por Día</div>
+                                    <div className="value">${parseFloat(resultado.totalPorDia).toLocaleString('es-MX')}</div>
+                                </div>
+
+                                <div className="result-item">
+                                    <div className="label">⏱️ Días del Préstamo</div>
+                                    <div className="value">{resultado.diasPrestamo} días</div>
+                                </div>
+
+                                <div className="result-item">
+                                    <div className="label">📈 Total de Intereses</div>
+                                    <div className="value">${parseFloat(resultado.totalInteres).toLocaleString('es-MX')}</div>
+                                </div>
+
+                                <button className="whatsapp-btn" onClick={enviarWhatsApp}>
+                                    <span className="icon">📱</span>
+                                    Solicitar por WhatsApp
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
