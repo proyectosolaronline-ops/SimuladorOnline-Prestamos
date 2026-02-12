@@ -625,26 +625,21 @@ Deseo solicitar este préstamo.`;
 
             const html = `
                 <div class="card">
-                    <!-- Selector de Capital Interactivo -->
+                    <!-- SELECTOR 1: CAPITAL -->
                     <div class="form-group">
-                        <label>💵 ¿Cuánto necesitas?</label>
-                        <div class="range-value">
-                            <div class="amount">$${capital.toLocaleString('es-MX')}</div>
-                            <div class="label">Arrastra para ajustar</div>
-                        </div>
-                        <div class="range-container">
-                            <input type="range" 
-                                   id="capital-slider" 
-                                   min="${minCapital}" 
-                                   max="${maxCapital}" 
-                                   step="${stepCapital}" 
-                                   value="${capital}">
-                        </div>
+                        <label>💵 Capital</label>
+                        <select id="capital-select">
+                            ${capitalesDisponibles.map(c => `
+                                <option value="${c}" ${c === capital ? 'selected' : ''}>
+                                    $${c.toLocaleString('es-MX')}
+                                </option>
+                            `).join('')}
+                        </select>
                     </div>
 
-                    <!-- Selector de Meses -->
+                    <!-- SELECTOR 2: MESES -->
                     <div class="form-group">
-                        <label>📅 ¿En cuántos meses?</label>
+                        <label>📅 Meses</label>
                         <select id="meses-select">
                             ${mesesDisponibles.map(m => `
                                 <option value="${m}" ${m === meses ? 'selected' : ''}>
@@ -654,45 +649,40 @@ Deseo solicitar este préstamo.`;
                         </select>
                     </div>
 
-                    <!-- Tasa de Interés -->
+                    <!-- SELECTOR 3: INTERÉS -->
                     <div class="form-group">
-                        <label>📊 Tasa de interés</label>
-                        <div class="range-value">
-                            <div class="amount">${interes}%</div>
-                            <div class="label">Mensual</div>
-                        </div>
+                        <label>📊 Interés (%)</label>
+                        <select id="interes-select">
+                            ${mesesDisponibles.map(m => {
+                                const interesParaMes = parametros[capital]?.[m] || 0;
+                                return `<option value="${m}" ${m === meses ? 'selected' : ''}>${interesParaMes}%</option>`;
+                            }).join('')}
+                        </select>
                     </div>
 
                     <!-- TOTAL PRÉSTAMO DESTACADO -->
                     <div class="total-prestamo">
-                        <div class="label">💰 Total a Pagar</div>
+                        <div class="label">💰 Total del Préstamo</div>
                         <div class="amount">$${parseFloat(resultado.totalPrestamo).toLocaleString('es-MX')}</div>
-                        <div class="subtitle">Calculado en tiempo real</div>
                     </div>
 
-                    <!-- PARÁMETROS CALCULADOS EN TIEMPO REAL -->
+                    <!-- RESULTADOS EN TIEMPO REAL -->
                     <div class="parametros-calculados">
-                        <div class="parametro-item">
+                        <div class="parametro-item full-width">
                             <span class="icon">📆</span>
-                            <div class="label">Pago Diario</div>
+                            <div class="label">Pago por Día</div>
                             <div class="value">$${parseFloat(resultado.totalPorDia).toLocaleString('es-MX')}</div>
                         </div>
 
                         <div class="parametro-item">
                             <span class="icon">⏱️</span>
-                            <div class="label">Días del Préstamo</div>
+                            <div class="label">Días Totales</div>
                             <div class="value">${resultado.diasPrestamo}</div>
                         </div>
 
                         <div class="parametro-item">
-                            <span class="icon">📈</span>
-                            <div class="label">Intereses Totales</div>
-                            <div class="value">$${parseFloat(resultado.totalInteres).toLocaleString('es-MX')}</div>
-                        </div>
-
-                        <div class="parametro-item">
                             <span class="icon">💵</span>
-                            <div class="label">Capital Solicitado</div>
+                            <div class="label">Capital</div>
                             <div class="value">$${parseFloat(resultado.totalCapital).toLocaleString('es-MX')}</div>
                         </div>
                     </div>
@@ -702,8 +692,17 @@ Deseo solicitar este préstamo.`;
             document.getElementById('app').innerHTML = html;
             
             // Event listeners
-            document.getElementById('capital-slider').addEventListener('input', onCapitalSliderChange);
+            document.getElementById('capital-select').addEventListener('change', onCapitalChange);
             document.getElementById('meses-select').addEventListener('change', onMesesChange);
+            document.getElementById('interes-select').addEventListener('change', onMesesChange);
+        }
+
+        function onCapitalChange(e) {
+            capital = Number(e.target.value);
+            const mesesDisponibles = Object.keys(parametros[capital] || {}).map(Number).sort((a,b) => a-b);
+            meses = mesesDisponibles[0] || 3;
+            interes = parametros[capital]?.[meses] || 0;
+            render();
         }
 
         // Event listener para botón flotante de WhatsApp
