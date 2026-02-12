@@ -448,7 +448,7 @@
 
         async function cargarParametros() {
             try {
-                // Cargar parámetros de préstamo
+                // Cargar parámetros de préstamo desde pestaña "Parametros"
                 const urlParametros = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Parametros`;
                 const response = await fetch(urlParametros);
                 const text = await response.text();
@@ -457,8 +457,9 @@
                 const rows = json.table.rows;
                 parametros = {};
                 
+                // Formato: Columna A=Interes, B=Meses, C=Capital
                 rows.forEach(row => {
-                    if (row.c[0] && row.c[1] && row.c[2]) {
+                    if (row.c && row.c[0] && row.c[1] && row.c[2]) {
                         const interesVal = parseFloat(row.c[0].v);
                         const mesesVal = parseInt(row.c[1].v);
                         const capitalVal = parseFloat(row.c[2].v);
