@@ -17,6 +17,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 2rem;
+            padding-bottom: 6rem;
         }
 
         .container {
@@ -42,6 +43,43 @@
             opacity: 0.9;
         }
 
+        /* Notificador Admin */
+        .admin-notification {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            animation: slideDown 0.5s ease-out;
+            display: none;
+        }
+
+        .admin-notification.active {
+            display: block;
+        }
+
+        .admin-notification .icon {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        .admin-notification .message {
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .card {
             background: white;
             border-radius: 24px;
@@ -57,15 +95,6 @@
             font-size: 1.2rem;
         }
 
-        .error {
-            background: #fee;
-            color: #c00;
-            padding: 1rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            text-align: center;
-        }
-
         .form-group {
             margin-bottom: 2rem;
         }
@@ -78,25 +107,75 @@
             font-size: 1rem;
         }
 
-        .value-display {
-            background: #f8f9fa;
-            padding: 1rem;
-            border-radius: 12px;
-            text-align: center;
+        /* Range Slider Personalizado */
+        .range-container {
+            position: relative;
             margin-bottom: 1rem;
-            border: 2px solid #e9ecef;
         }
 
-        .value-display .amount {
-            font-size: 2rem;
+        .range-value {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.25rem 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .range-value:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .range-value .amount {
+            font-size: 2.5rem;
             font-weight: 700;
-            color: #667eea;
+            letter-spacing: -1px;
         }
 
-        .value-display .label {
+        .range-value .label {
             font-size: 0.9rem;
-            color: #666;
+            opacity: 0.9;
             margin-top: 0.25rem;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e9ecef;
+            outline: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
         }
 
         select {
@@ -118,86 +197,176 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        .results {
+        /* Total Préstamo Destacado */
+        .total-prestamo {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 2rem;
+            padding: 2.5rem 2rem;
             border-radius: 20px;
+            text-align: center;
+            margin: 2rem 0;
+            box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
+            }
+            50% {
+                box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
+            }
+        }
+
+        .total-prestamo .label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .total-prestamo .amount {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: -2px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .total-prestamo .subtitle {
+            font-size: 0.95rem;
+            opacity: 0.85;
+        }
+
+        /* Parámetros Calculados en Tiempo Real */
+        .parametros-calculados {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
             margin-top: 2rem;
         }
 
-        .results h3 {
+        .parametro-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 16px;
             text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            font-weight: 700;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
         }
 
-        .result-item {
-            background: rgba(255,255,255,0.15);
-            padding: 1.25rem;
-            border-radius: 12px;
-            margin-bottom: 1rem;
-            backdrop-filter: blur(10px);
+        .parametro-item:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
         }
 
-        .result-item .label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-bottom: 0.25rem;
-        }
-
-        .result-item .value {
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-
-        .result-item.highlight {
-            background: rgba(255,255,255,0.25);
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-
-        .result-item.highlight .value {
+        .parametro-item .icon {
             font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .parametro-item .label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .parametro-item .value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .parametro-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Botón Flotante WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
         }
 
         .whatsapp-btn {
-            width: 100%;
-            padding: 1.25rem;
+            width: 70px;
+            height: 70px;
             background: #25D366;
             color: white;
             border: none;
-            border-radius: 16px;
-            font-size: 1.2rem;
-            font-weight: 700;
+            border-radius: 50%;
+            font-size: 2.5rem;
             cursor: pointer;
-            margin-top: 2rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.75rem;
-            transition: all 0.3s;
-            font-family: 'Poppins', sans-serif;
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+            transition: all 0.3s ease;
+            animation: bounce 2s infinite;
         }
 
         .whatsapp-btn:hover {
             background: #20BA5A;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 28px rgba(37, 211, 102, 0.4);
+            transform: scale(1.1);
+            box-shadow: 0 12px 32px rgba(37, 211, 102, 0.6);
         }
 
         .whatsapp-btn:active {
-            transform: translateY(0);
+            transform: scale(0.95);
         }
 
-        .icon {
-            font-size: 1.5rem;
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .whatsapp-tooltip {
+            position: absolute;
+            right: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            color: #333;
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .whatsapp-float:hover .whatsapp-tooltip {
+            opacity: 1;
+        }
+
+        .whatsapp-tooltip::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid white;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
         }
 
         @media (max-width: 640px) {
             body {
                 padding: 1rem;
+                padding-bottom: 6rem;
             }
 
             .header h1 {
@@ -208,8 +377,31 @@
                 padding: 1.5rem;
             }
 
-            .value-display .amount {
-                font-size: 1.5rem;
+            .range-value .amount {
+                font-size: 2rem;
+            }
+
+            .total-prestamo .amount {
+                font-size: 2.5rem;
+            }
+
+            .parametros-calculados {
+                grid-template-columns: 1fr;
+            }
+
+            .whatsapp-float {
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+
+            .whatsapp-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+
+            .whatsapp-tooltip {
+                display: none;
             }
         }
     </style>
@@ -218,11 +410,25 @@
     <div class="container">
         <div class="header">
             <h1>💰 Simulador de Préstamos</h1>
-            <p>Calcula tu préstamo en segundos</p>
+            <p>Calcula tu préstamo en tiempo real</p>
+        </div>
+
+        <!-- Notificador Admin -->
+        <div id="admin-notification" class="admin-notification">
+            <span class="icon">📢</span>
+            <span class="message" id="admin-message"></span>
         </div>
 
         <div id="loading" class="loading">⏳ Cargando parámetros...</div>
         <div id="app" style="display:none;"></div>
+    </div>
+
+    <!-- Botón Flotante WhatsApp -->
+    <div class="whatsapp-float">
+        <div class="whatsapp-tooltip">¡Solicita tu préstamo!</div>
+        <button class="whatsapp-btn" id="whatsapp-float-btn" title="Solicitar por WhatsApp">
+            📱
+        </button>
     </div>
 
     <script>
@@ -230,14 +436,21 @@
         const WHATSAPP_NUMBER = '4424003376';
 
         let parametros = null;
+        let adminConfig = null;
         let capital = 5000;
         let meses = 3;
         let interes = 0;
 
+        // Rangos para el slider de capital
+        let minCapital = 1000;
+        let maxCapital = 50000;
+        let stepCapital = 500;
+
         async function cargarParametros() {
             try {
-                const url = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Parametros`;
-                const response = await fetch(url);
+                // Cargar parámetros de préstamo
+                const urlParametros = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Parametros`;
+                const response = await fetch(urlParametros);
                 const text = await response.text();
                 const json = JSON.parse(text.substring(47).slice(0, -2));
                 
@@ -254,9 +467,16 @@
                         parametros[capitalVal][mesesVal] = interesVal;
                     }
                 });
+
+                // Cargar configuración de administrador
+                await cargarConfigAdmin();
                 
                 const capitales = Object.keys(parametros).map(Number).sort((a,b) => a-b);
-                capital = capitales[0] || 5000;
+                if (capitales.length > 0) {
+                    minCapital = capitales[0];
+                    maxCapital = capitales[capitales.length - 1];
+                    capital = capitales[0];
+                }
                 
                 const mesesDisponibles = Object.keys(parametros[capital] || {}).map(Number).sort((a,b) => a-b);
                 meses = mesesDisponibles[0] || 3;
@@ -267,9 +487,12 @@
                 render();
             } catch (err) {
                 console.error('Error:', err);
+                // Valores por defecto
                 parametros = {
                     5000: { 3: 16, 6: 20, 9: 12 },
-                    10000: { 3: 16, 6: 20, 9: 12, 12: 10 }
+                    10000: { 3: 16, 6: 20, 9: 12, 12: 10 },
+                    15000: { 3: 16, 6: 20, 9: 12, 12: 10 },
+                    20000: { 3: 16, 6: 20, 9: 12, 12: 10 }
                 };
                 capital = 5000;
                 meses = 3;
@@ -280,6 +503,60 @@
             }
         }
 
+        async function cargarConfigAdmin() {
+            try {
+                const urlAdmin = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Admin`;
+                const response = await fetch(urlAdmin);
+                const text = await response.text();
+                const json = JSON.parse(text.substring(47).slice(0, -2));
+                
+                const rows = json.table.rows;
+                if (rows && rows[0] && rows[0].c[0] && rows[0].c[1]) {
+                    const activo = rows[0].c[0].v; // true/false
+                    const mensaje = rows[0].c[1].v; // texto del mensaje
+                    
+                    adminConfig = {
+                        activo: activo === true || activo === 'true' || activo === 'TRUE',
+                        mensaje: mensaje
+                    };
+                    
+                    mostrarNotificacionAdmin();
+                }
+            } catch (err) {
+                console.log('No se pudo cargar configuración de admin');
+            }
+        }
+
+        function mostrarNotificacionAdmin() {
+            const notification = document.getElementById('admin-notification');
+            const messageElement = document.getElementById('admin-message');
+            
+            if (adminConfig && adminConfig.activo && adminConfig.mensaje) {
+                messageElement.textContent = adminConfig.mensaje;
+                notification.classList.add('active');
+            } else {
+                notification.classList.remove('active');
+            }
+        }
+
+        function obtenerCapitalMasCercano(valor) {
+            const capitalesDisponibles = Object.keys(parametros).map(Number).sort((a,b) => a-b);
+            
+            // Encontrar el capital más cercano
+            let cercano = capitalesDisponibles[0];
+            let menorDiferencia = Math.abs(valor - cercano);
+            
+            capitalesDisponibles.forEach(c => {
+                const diferencia = Math.abs(valor - c);
+                if (diferencia < menorDiferencia) {
+                    menorDiferencia = diferencia;
+                    cercano = c;
+                }
+            });
+            
+            return cercano;
+        }
+
         function calcularPrestamo() {
             const tasaMensual = interes / 100;
             const totalInteres = capital * tasaMensual * meses;
@@ -287,25 +564,12 @@
             const diasPrestamo = meses * 30;
             const totalPorDia = totalPrestamo / diasPrestamo;
 
-            const simulacion = {
-                fecha: new Date().toISOString(),
-                capital,
-                meses,
-                interes,
-                totalInteres,
-                totalPrestamo,
-                diasPrestamo,
-                totalPorDia
-            };
-            
-            const simulaciones = JSON.parse(localStorage.getItem('simulaciones') || '[]');
-            simulaciones.push(simulacion);
-            localStorage.setItem('simulaciones', JSON.stringify(simulaciones));
-
             return {
+                capital: capital,
+                meses: meses,
+                interes: interes,
                 totalPorDia: totalPorDia.toFixed(2),
-                diasPrestamo,
-                meses,
+                diasPrestamo: diasPrestamo,
                 totalCapital: capital.toFixed(2),
                 totalPrestamo: totalPrestamo.toFixed(2),
                 totalInteres: totalInteres.toFixed(2)
@@ -333,10 +597,17 @@ Deseo solicitar este préstamo.`;
             window.open(url, '_blank');
         }
 
-        function onCapitalChange(e) {
-            capital = Number(e.target.value);
+        function onCapitalSliderChange(e) {
+            const valor = Number(e.target.value);
+            capital = obtenerCapitalMasCercano(valor);
+            
             const mesesDisponibles = Object.keys(parametros[capital] || {}).map(Number).sort((a,b) => a-b);
-            meses = mesesDisponibles[0] || 3;
+            
+            // Mantener los meses actuales si están disponibles, sino usar el primero
+            if (!mesesDisponibles.includes(meses)) {
+                meses = mesesDisponibles[0] || 3;
+            }
+            
             interes = parametros[capital]?.[meses] || 0;
             render();
         }
@@ -354,27 +625,26 @@ Deseo solicitar este préstamo.`;
 
             const html = `
                 <div class="card">
+                    <!-- Selector de Capital Interactivo -->
                     <div class="form-group">
                         <label>💵 ¿Cuánto necesitas?</label>
-                        <div class="value-display">
+                        <div class="range-value">
                             <div class="amount">$${capital.toLocaleString('es-MX')}</div>
-                            <div class="label">Capital a solicitar</div>
+                            <div class="label">Arrastra para ajustar</div>
                         </div>
-                        <select id="capital-select">
-                            ${capitalesDisponibles.map(c => `
-                                <option value="${c}" ${c === capital ? 'selected' : ''}>
-                                    $${c.toLocaleString('es-MX')}
-                                </option>
-                            `).join('')}
-                        </select>
+                        <div class="range-container">
+                            <input type="range" 
+                                   id="capital-slider" 
+                                   min="${minCapital}" 
+                                   max="${maxCapital}" 
+                                   step="${stepCapital}" 
+                                   value="${capital}">
+                        </div>
                     </div>
 
+                    <!-- Selector de Meses -->
                     <div class="form-group">
                         <label>📅 ¿En cuántos meses?</label>
-                        <div class="value-display">
-                            <div class="amount">${meses}</div>
-                            <div class="label">Meses de plazo</div>
-                        </div>
                         <select id="meses-select">
                             ${mesesDisponibles.map(m => `
                                 <option value="${m}" ${m === meses ? 'selected' : ''}>
@@ -384,52 +654,62 @@ Deseo solicitar este préstamo.`;
                         </select>
                     </div>
 
+                    <!-- Tasa de Interés -->
                     <div class="form-group">
-                        <label>📊 Tasa de interés aplicable</label>
-                        <div class="value-display">
+                        <label>📊 Tasa de interés</label>
+                        <div class="range-value">
                             <div class="amount">${interes}%</div>
                             <div class="label">Mensual</div>
                         </div>
                     </div>
 
-                    <div class="results">
-                        <h3>📋 Resumen de tu Préstamo</h3>
-                        
-                        <div class="result-item highlight">
-                            <div class="label">💰 Total a Pagar</div>
-                            <div class="value">$${parseFloat(resultado.totalPrestamo).toLocaleString('es-MX')}</div>
-                        </div>
+                    <!-- TOTAL PRÉSTAMO DESTACADO -->
+                    <div class="total-prestamo">
+                        <div class="label">💰 Total a Pagar</div>
+                        <div class="amount">$${parseFloat(resultado.totalPrestamo).toLocaleString('es-MX')}</div>
+                        <div class="subtitle">Calculado en tiempo real</div>
+                    </div>
 
-                        <div class="result-item">
-                            <div class="label">📆 Pago por Día</div>
+                    <!-- PARÁMETROS CALCULADOS EN TIEMPO REAL -->
+                    <div class="parametros-calculados">
+                        <div class="parametro-item">
+                            <span class="icon">📆</span>
+                            <div class="label">Pago Diario</div>
                             <div class="value">$${parseFloat(resultado.totalPorDia).toLocaleString('es-MX')}</div>
                         </div>
 
-                        <div class="result-item">
-                            <div class="label">⏱️ Días del Préstamo</div>
-                            <div class="value">${resultado.diasPrestamo} días</div>
+                        <div class="parametro-item">
+                            <span class="icon">⏱️</span>
+                            <div class="label">Días del Préstamo</div>
+                            <div class="value">${resultado.diasPrestamo}</div>
                         </div>
 
-                        <div class="result-item">
-                            <div class="label">📈 Total de Intereses</div>
+                        <div class="parametro-item">
+                            <span class="icon">📈</span>
+                            <div class="label">Intereses Totales</div>
                             <div class="value">$${parseFloat(resultado.totalInteres).toLocaleString('es-MX')}</div>
                         </div>
 
-                        <button class="whatsapp-btn" id="whatsapp-btn">
-                            <span class="icon">📱</span>
-                            Solicitar por WhatsApp
-                        </button>
+                        <div class="parametro-item">
+                            <span class="icon">💵</span>
+                            <div class="label">Capital Solicitado</div>
+                            <div class="value">$${parseFloat(resultado.totalCapital).toLocaleString('es-MX')}</div>
+                        </div>
                     </div>
                 </div>
             `;
 
             document.getElementById('app').innerHTML = html;
             
-            document.getElementById('capital-select').addEventListener('change', onCapitalChange);
+            // Event listeners
+            document.getElementById('capital-slider').addEventListener('input', onCapitalSliderChange);
             document.getElementById('meses-select').addEventListener('change', onMesesChange);
-            document.getElementById('whatsapp-btn').addEventListener('click', enviarWhatsApp);
         }
 
+        // Event listener para botón flotante de WhatsApp
+        document.getElementById('whatsapp-float-btn').addEventListener('click', enviarWhatsApp);
+
+        // Inicializar
         cargarParametros();
     </script>
 </body>
