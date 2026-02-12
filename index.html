@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -432,7 +433,7 @@
     </div>
 
     <script>
-        const GOOGLE_SHEET_ID = '19Viesr9Lhy347A9L03J_RuxftUhBduaYsBY206IO6X8';
+        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwkI-t5xxEHZWWAjR1zMk7YYMVmESzno5xpA14yA2FE0edEc1QMwjJzFRztvrrI22zL6w/exec';
         const WHATSAPP_NUMBER = '4424003376';
 
         let parametros = null;
@@ -448,26 +449,25 @@
 
         async function cargarParametros() {
             try {
-                // Cargar parámetros de préstamo desde pestaña "Parametros"
-                const urlParametros = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Parametros`;
-                const response = await fetch(urlParametros);
-                const text = await response.text();
-                const json = JSON.parse(text.substring(47).slice(0, -2));
+                // Cargar parámetros desde Apps Script
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL + '?tipo=parametros');
+                const data = await response.json();
                 
-                const rows = json.table.rows;
+                console.log('Datos recibidos del Apps Script:', data);
+                
                 parametros = {};
                 
-                // Formato: Columna A=Interes, B=Meses, C=Capital
-                rows.forEach(row => {
-                    if (row.c && row.c[0] && row.c[1] && row.c[2]) {
-                        const interesVal = parseFloat(row.c[0].v);
-                        const mesesVal = parseInt(row.c[1].v);
-                        const capitalVal = parseFloat(row.c[2].v);
-                        
-                        if (!parametros[capitalVal]) parametros[capitalVal] = {};
-                        parametros[capitalVal][mesesVal] = interesVal;
-                    }
+                // Los datos vienen como: [{interes, meses, capital}, ...]
+                data.forEach(item => {
+                    const capitalVal = parseFloat(item.capital);
+                    const mesesVal = parseInt(item.meses);
+                    const interesVal = parseFloat(item.interes);
+                    
+                    if (!parametros[capitalVal]) parametros[capitalVal] = {};
+                    parametros[capitalVal][mesesVal] = interesVal;
                 });
+                
+                console.log('Parámetros procesados:', parametros);
 
                 // Cargar configuración de administrador
                 await cargarConfigAdmin();
@@ -506,25 +506,17 @@
 
         async function cargarConfigAdmin() {
             try {
-                const urlAdmin = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Admin`;
-                const response = await fetch(urlAdmin);
-                const text = await response.text();
-                const json = JSON.parse(text.substring(47).slice(0, -2));
+                const response = await fetch(GOOGLE_APPS_SCRIPT_URL + '?tipo=admin');
+                const data = await response.json();
                 
-                const rows = json.table.rows;
-                if (rows && rows[0] && rows[0].c[0] && rows[0].c[1]) {
-                    const activo = rows[0].c[0].v; // true/false
-                    const mensaje = rows[0].c[1].v; // texto del mensaje
-                    
-                    adminConfig = {
-                        activo: activo === true || activo === 'true' || activo === 'TRUE',
-                        mensaje: mensaje
-                    };
-                    
-                    mostrarNotificacionAdmin();
-                }
+                adminConfig = {
+                    activo: data.activo,
+                    mensaje: data.mensaje
+                };
+                
+                mostrarNotificacionAdmin();
             } catch (err) {
-                console.log('No se pudo cargar configuración de admin');
+                console.log('No se pudo cargar configuración de admin:', err);
             }
         }
 
