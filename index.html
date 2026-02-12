@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -18,7 +17,6 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 2rem;
-            padding-bottom: 6rem;
         }
 
         .container {
@@ -36,7 +34,6 @@
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .header p {
@@ -52,7 +49,6 @@
             border-radius: 16px;
             margin-bottom: 2rem;
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            animation: slideDown 0.5s ease-out;
             display: none;
         }
 
@@ -60,25 +56,9 @@
             display: block;
         }
 
-        .admin-notification .icon {
-            font-size: 1.5rem;
-            margin-right: 0.5rem;
-        }
-
         .admin-notification .message {
             font-weight: 500;
             line-height: 1.5;
-        }
-
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
         }
 
         .card {
@@ -86,7 +66,6 @@
             border-radius: 24px;
             padding: 2.5rem;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            margin-bottom: 2rem;
         }
 
         .loading {
@@ -94,6 +73,15 @@
             padding: 2rem;
             color: white;
             font-size: 1.2rem;
+        }
+
+        .error {
+            background: #fee;
+            color: #c00;
+            padding: 1rem;
+            border-radius: 12px;
+            margin: 1rem 0;
+            text-align: center;
         }
 
         .form-group {
@@ -106,77 +94,6 @@
             color: #333;
             margin-bottom: 0.75rem;
             font-size: 1rem;
-        }
-
-        /* Range Slider Personalizado */
-        .range-container {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-
-        .range-value {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1.25rem 1.5rem;
-            border-radius: 16px;
-            text-align: center;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .range-value:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
-        }
-
-        .range-value .amount {
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-        }
-
-        .range-value .label {
-            font-size: 0.9rem;
-            opacity: 0.9;
-            margin-top: 0.25rem;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 5px;
-            background: #e9ecef;
-            outline: none;
-            -webkit-appearance: none;
-            cursor: pointer;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.6);
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
         }
 
         select {
@@ -198,7 +115,7 @@
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
-        /* Total Préstamo Destacado */
+        /* Total Préstamo */
         .total-prestamo {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -207,82 +124,54 @@
             text-align: center;
             margin: 2rem 0;
             box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 12px 32px rgba(102, 126, 234, 0.4);
-            }
-            50% {
-                box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
-            }
         }
 
         .total-prestamo .label {
             font-size: 1.1rem;
             opacity: 0.9;
             margin-bottom: 0.5rem;
-            font-weight: 500;
         }
 
         .total-prestamo .amount {
             font-size: 3.5rem;
             font-weight: 700;
             letter-spacing: -2px;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
 
-        .total-prestamo .subtitle {
-            font-size: 0.95rem;
-            opacity: 0.85;
-        }
-
-        /* Parámetros Calculados en Tiempo Real */
-        .parametros-calculados {
+        /* Resultados */
+        .resultados {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 1rem;
-            margin-top: 2rem;
         }
 
-        .parametro-item {
+        .resultado-item {
             background: #f8f9fa;
             padding: 1.5rem;
             border-radius: 16px;
             text-align: center;
             border: 2px solid #e9ecef;
-            transition: all 0.3s ease;
         }
 
-        .parametro-item:hover {
-            border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        .resultado-item.full {
+            grid-column: 1 / -1;
         }
 
-        .parametro-item .icon {
+        .resultado-item .icon {
             font-size: 2rem;
             margin-bottom: 0.5rem;
-            display: block;
         }
 
-        .parametro-item .label {
+        .resultado-item .label {
             font-size: 0.85rem;
             color: #666;
             margin-bottom: 0.5rem;
-            font-weight: 500;
         }
 
-        .parametro-item .value {
+        .resultado-item .value {
             font-size: 1.5rem;
             font-weight: 700;
             color: #667eea;
-        }
-
-        .parametro-item.full-width {
-            grid-column: 1 / -1;
         }
 
         /* Botón Flotante WhatsApp */
@@ -302,72 +191,30 @@
             border-radius: 50%;
             font-size: 2.5rem;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
-            transition: all 0.3s ease;
-            animation: bounce 2s infinite;
+            transition: all 0.3s;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 12px 32px rgba(37, 211, 102, 0.6);
+            }
         }
 
         .whatsapp-btn:hover {
             background: #20BA5A;
             transform: scale(1.1);
-            box-shadow: 0 12px 32px rgba(37, 211, 102, 0.6);
-        }
-
-        .whatsapp-btn:active {
-            transform: scale(0.95);
-        }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        .whatsapp-tooltip {
-            position: absolute;
-            right: 80px;
-            top: 50%;
-            transform: translateY(-50%);
-            background: white;
-            color: #333;
-            padding: 0.75rem 1.25rem;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            white-space: nowrap;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            opacity: 0;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        .whatsapp-float:hover .whatsapp-tooltip {
-            opacity: 1;
-        }
-
-        .whatsapp-tooltip::after {
-            content: '';
-            position: absolute;
-            right: -8px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 0;
-            height: 0;
-            border-left: 8px solid white;
-            border-top: 8px solid transparent;
-            border-bottom: 8px solid transparent;
         }
 
         @media (max-width: 640px) {
             body {
                 padding: 1rem;
-                padding-bottom: 6rem;
             }
 
             .header h1 {
@@ -378,15 +225,11 @@
                 padding: 1.5rem;
             }
 
-            .range-value .amount {
-                font-size: 2rem;
-            }
-
             .total-prestamo .amount {
                 font-size: 2.5rem;
             }
 
-            .parametros-calculados {
+            .resultados {
                 grid-template-columns: 1fr;
             }
 
@@ -400,10 +243,6 @@
                 height: 60px;
                 font-size: 2rem;
             }
-
-            .whatsapp-tooltip {
-                display: none;
-            }
         }
     </style>
 </head>
@@ -416,213 +255,126 @@
 
         <!-- Notificador Admin -->
         <div id="admin-notification" class="admin-notification">
-            <span class="icon">📢</span>
-            <span class="message" id="admin-message"></span>
+            <div class="message" id="admin-message"></div>
         </div>
 
-        <div id="loading" class="loading">⏳ Cargando parámetros...</div>
+        <div id="loading" class="loading">⏳ Cargando...</div>
+        <div id="error" class="error" style="display:none;"></div>
         <div id="app" style="display:none;"></div>
     </div>
 
     <!-- Botón Flotante WhatsApp -->
     <div class="whatsapp-float">
-        <div class="whatsapp-tooltip">¡Solicita tu préstamo!</div>
-        <button class="whatsapp-btn" id="whatsapp-float-btn" title="Solicitar por WhatsApp">
-            📱
-        </button>
+        <button class="whatsapp-btn" id="whatsapp-btn" title="Solicitar por WhatsApp">📱</button>
     </div>
 
     <script>
-        const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwkI-t5xxEHZWWAjR1zMk7YYMVmESzno5xpA14yA2FE0edEc1QMwjJzFRztvrrI22zL6w/exec';
+        // CONFIGURACIÓN
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwkI-t5xxEHZWWAjR1zMk7YYMVmESzno5xpA14yA2FE0edEc1QMwjJzFRztvrrI22zL6w/exec';
         const WHATSAPP_NUMBER = '4424003376';
 
-        let parametros = null;
-        let adminConfig = null;
-        let capital = 5000;
-        let meses = 3;
+        // ESTADO
+        let parametros = {};
+        let capital = 0;
+        let meses = 0;
         let interes = 0;
 
-        // Rangos para el slider de capital
-        let minCapital = 1000;
-        let maxCapital = 50000;
-        let stepCapital = 500;
-
-        async function cargarParametros() {
+        // CARGAR DATOS
+        async function inicializar() {
             try {
-                // Cargar parámetros desde Apps Script
-                const response = await fetch(GOOGLE_APPS_SCRIPT_URL + '?tipo=parametros');
-                const data = await response.json();
+                // Cargar parámetros
+                const responseParametros = await fetch(APPS_SCRIPT_URL + '?tipo=parametros');
+                const dataParametros = await responseParametros.json();
                 
-                console.log('Datos recibidos del Apps Script:', data);
+                console.log('✅ Datos recibidos:', dataParametros);
                 
-                parametros = {};
+                if (!dataParametros || dataParametros.length === 0) {
+                    throw new Error('No se recibieron datos de la hoja Parametros');
+                }
                 
-                // Los datos vienen como: [{interes, meses, capital}, ...]
-                data.forEach(item => {
-                    const capitalVal = parseFloat(item.capital);
-                    const mesesVal = parseInt(item.meses);
-                    const interesVal = parseFloat(item.interes);
+                // Organizar datos: parametros[capital][meses] = interes
+                dataParametros.forEach(item => {
+                    const cap = Number(item.capital);
+                    const mes = Number(item.meses);
+                    const int = Number(item.interes);
                     
-                    if (!parametros[capitalVal]) parametros[capitalVal] = {};
-                    parametros[capitalVal][mesesVal] = interesVal;
+                    if (!parametros[cap]) parametros[cap] = {};
+                    parametros[cap][mes] = int;
                 });
                 
-                console.log('Parámetros procesados:', parametros);
-
-                // Cargar configuración de administrador
-                await cargarConfigAdmin();
+                console.log('✅ Parámetros organizados:', parametros);
                 
+                // Establecer valores iniciales
                 const capitales = Object.keys(parametros).map(Number).sort((a,b) => a-b);
-                if (capitales.length > 0) {
-                    minCapital = capitales[0];
-                    maxCapital = capitales[capitales.length - 1];
-                    capital = capitales[0];
-                }
+                capital = capitales[0];
                 
-                const mesesDisponibles = Object.keys(parametros[capital] || {}).map(Number).sort((a,b) => a-b);
-                meses = mesesDisponibles[0] || 3;
-                interes = parametros[capital]?.[meses] || 0;
+                const mesesDisponibles = Object.keys(parametros[capital]).map(Number).sort((a,b) => a-b);
+                meses = mesesDisponibles[0];
                 
+                interes = parametros[capital][meses];
+                
+                // Cargar configuración admin
+                await cargarAdmin();
+                
+                // Mostrar interfaz
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('app').style.display = 'block';
-                render();
-            } catch (err) {
-                console.error('Error:', err);
-                // Valores por defecto
-                parametros = {
-                    5000: { 3: 16, 6: 20, 9: 12 },
-                    10000: { 3: 16, 6: 20, 9: 12, 12: 10 },
-                    15000: { 3: 16, 6: 20, 9: 12, 12: 10 },
-                    20000: { 3: 16, 6: 20, 9: 12, 12: 10 }
-                };
-                capital = 5000;
-                meses = 3;
-                interes = 16;
+                renderizar();
+                
+            } catch (error) {
+                console.error('❌ Error:', error);
                 document.getElementById('loading').style.display = 'none';
-                document.getElementById('app').style.display = 'block';
-                render();
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = 'Error al cargar datos: ' + error.message;
             }
         }
 
-        async function cargarConfigAdmin() {
+        async function cargarAdmin() {
             try {
-                const response = await fetch(GOOGLE_APPS_SCRIPT_URL + '?tipo=admin');
+                const response = await fetch(APPS_SCRIPT_URL + '?tipo=admin');
                 const data = await response.json();
                 
-                adminConfig = {
-                    activo: data.activo,
-                    mensaje: data.mensaje
-                };
-                
-                mostrarNotificacionAdmin();
-            } catch (err) {
-                console.log('No se pudo cargar configuración de admin:', err);
-            }
-        }
-
-        function mostrarNotificacionAdmin() {
-            const notification = document.getElementById('admin-notification');
-            const messageElement = document.getElementById('admin-message');
-            
-            if (adminConfig && adminConfig.activo && adminConfig.mensaje) {
-                messageElement.textContent = adminConfig.mensaje;
-                notification.classList.add('active');
-            } else {
-                notification.classList.remove('active');
-            }
-        }
-
-        function obtenerCapitalMasCercano(valor) {
-            const capitalesDisponibles = Object.keys(parametros).map(Number).sort((a,b) => a-b);
-            
-            // Encontrar el capital más cercano
-            let cercano = capitalesDisponibles[0];
-            let menorDiferencia = Math.abs(valor - cercano);
-            
-            capitalesDisponibles.forEach(c => {
-                const diferencia = Math.abs(valor - c);
-                if (diferencia < menorDiferencia) {
-                    menorDiferencia = diferencia;
-                    cercano = c;
+                if (data.activo && data.mensaje) {
+                    document.getElementById('admin-message').textContent = data.mensaje;
+                    document.getElementById('admin-notification').classList.add('active');
                 }
-            });
-            
-            return cercano;
+            } catch (error) {
+                console.log('ℹ️ No hay configuración de admin');
+            }
         }
 
-        function calcularPrestamo() {
+        // CALCULAR
+        function calcular() {
             const tasaMensual = interes / 100;
             const totalInteres = capital * tasaMensual * meses;
             const totalPrestamo = capital + totalInteres;
             const diasPrestamo = meses * 30;
-            const totalPorDia = totalPrestamo / diasPrestamo;
-
+            const pagodiario = totalPrestamo / diasPrestamo;
+            
             return {
                 capital: capital,
                 meses: meses,
                 interes: interes,
-                totalPorDia: totalPorDia.toFixed(2),
+                totalPrestamo: totalPrestamo,
+                totalInteres: totalInteres,
                 diasPrestamo: diasPrestamo,
-                totalCapital: capital.toFixed(2),
-                totalPrestamo: totalPrestamo.toFixed(2),
-                totalInteres: totalInteres.toFixed(2)
+                pagoDiario: pagodiario
             };
         }
 
-        function enviarWhatsApp() {
-            const resultado = calcularPrestamo();
-            
-            const mensaje = `*SOLICITUD DE PRÉSTAMO*
-
-💰 *Capital Solicitado:* $${parseFloat(resultado.totalCapital).toLocaleString('es-MX')}
-📅 *Plazo:* ${resultado.meses} meses (${resultado.diasPrestamo} días)
-📊 *Tasa de Interés:* ${interes}%
-
-*DESGLOSE DEL PRÉSTAMO:*
-━━━━━━━━━━━━━━━━━━
-💵 Total a Pagar: $${parseFloat(resultado.totalPrestamo).toLocaleString('es-MX')}
-📈 Interés Total: $${parseFloat(resultado.totalInteres).toLocaleString('es-MX')}
-📆 Pago Diario: $${parseFloat(resultado.totalPorDia).toLocaleString('es-MX')}
-
-Deseo solicitar este préstamo.`;
-
-            const url = `https://wa.me/52${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
-            window.open(url, '_blank');
-        }
-
-        function onCapitalSliderChange(e) {
-            const valor = Number(e.target.value);
-            capital = obtenerCapitalMasCercano(valor);
-            
+        // RENDERIZAR
+        function renderizar() {
+            const capitales = Object.keys(parametros).map(Number).sort((a,b) => a-b);
             const mesesDisponibles = Object.keys(parametros[capital] || {}).map(Number).sort((a,b) => a-b);
-            
-            // Mantener los meses actuales si están disponibles, sino usar el primero
-            if (!mesesDisponibles.includes(meses)) {
-                meses = mesesDisponibles[0] || 3;
-            }
-            
-            interes = parametros[capital]?.[meses] || 0;
-            render();
-        }
-
-        function onMesesChange(e) {
-            meses = Number(e.target.value);
-            interes = parametros[capital]?.[meses] || 0;
-            render();
-        }
-
-        function render() {
-            const capitalesDisponibles = Object.keys(parametros).map(Number).sort((a,b) => a-b);
-            const mesesDisponibles = parametros[capital] ? Object.keys(parametros[capital]).map(Number).sort((a,b) => a-b) : [];
-            const resultado = calcularPrestamo();
+            const resultado = calcular();
 
             const html = `
                 <div class="card">
-                    <!-- SELECTOR 1: CAPITAL -->
+                    <!-- Capital -->
                     <div class="form-group">
                         <label>💵 Capital</label>
                         <select id="capital-select">
-                            ${capitalesDisponibles.map(c => `
+                            ${capitales.map(c => `
                                 <option value="${c}" ${c === capital ? 'selected' : ''}>
                                     $${c.toLocaleString('es-MX')}
                                 </option>
@@ -630,7 +382,7 @@ Deseo solicitar este préstamo.`;
                         </select>
                     </div>
 
-                    <!-- SELECTOR 2: MESES -->
+                    <!-- Meses -->
                     <div class="form-group">
                         <label>📅 Meses</label>
                         <select id="meses-select">
@@ -642,41 +394,38 @@ Deseo solicitar este préstamo.`;
                         </select>
                     </div>
 
-                    <!-- SELECTOR 3: INTERÉS -->
+                    <!-- Interés -->
                     <div class="form-group">
-                        <label>📊 Interés (%)</label>
-                        <select id="interes-select">
-                            ${mesesDisponibles.map(m => {
-                                const interesParaMes = parametros[capital]?.[m] || 0;
-                                return `<option value="${m}" ${m === meses ? 'selected' : ''}>${interesParaMes}%</option>`;
-                            }).join('')}
+                        <label>📊 Interés</label>
+                        <select id="interes-select" disabled>
+                            <option>${interes}% mensual</option>
                         </select>
                     </div>
 
-                    <!-- TOTAL PRÉSTAMO DESTACADO -->
+                    <!-- TOTAL -->
                     <div class="total-prestamo">
                         <div class="label">💰 Total del Préstamo</div>
-                        <div class="amount">$${parseFloat(resultado.totalPrestamo).toLocaleString('es-MX')}</div>
+                        <div class="amount">$${resultado.totalPrestamo.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
                     </div>
 
-                    <!-- RESULTADOS EN TIEMPO REAL -->
-                    <div class="parametros-calculados">
-                        <div class="parametro-item full-width">
-                            <span class="icon">📆</span>
+                    <!-- RESULTADOS -->
+                    <div class="resultados">
+                        <div class="resultado-item full">
+                            <div class="icon">📆</div>
                             <div class="label">Pago por Día</div>
-                            <div class="value">$${parseFloat(resultado.totalPorDia).toLocaleString('es-MX')}</div>
+                            <div class="value">$${resultado.pagoDiario.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
                         </div>
 
-                        <div class="parametro-item">
-                            <span class="icon">⏱️</span>
+                        <div class="resultado-item">
+                            <div class="icon">⏱️</div>
                             <div class="label">Días Totales</div>
                             <div class="value">${resultado.diasPrestamo}</div>
                         </div>
 
-                        <div class="parametro-item">
-                            <span class="icon">💵</span>
+                        <div class="resultado-item">
+                            <div class="icon">💵</div>
                             <div class="label">Capital</div>
-                            <div class="value">$${parseFloat(resultado.totalCapital).toLocaleString('es-MX')}</div>
+                            <div class="value">$${resultado.capital.toLocaleString('es-MX')}</div>
                         </div>
                     </div>
                 </div>
@@ -685,24 +434,54 @@ Deseo solicitar este préstamo.`;
             document.getElementById('app').innerHTML = html;
             
             // Event listeners
-            document.getElementById('capital-select').addEventListener('change', onCapitalChange);
-            document.getElementById('meses-select').addEventListener('change', onMesesChange);
-            document.getElementById('interes-select').addEventListener('change', onMesesChange);
+            document.getElementById('capital-select').addEventListener('change', alCambiarCapital);
+            document.getElementById('meses-select').addEventListener('change', alCambiarMeses);
         }
 
-        function onCapitalChange(e) {
+        function alCambiarCapital(e) {
             capital = Number(e.target.value);
-            const mesesDisponibles = Object.keys(parametros[capital] || {}).map(Number).sort((a,b) => a-b);
-            meses = mesesDisponibles[0] || 3;
-            interes = parametros[capital]?.[meses] || 0;
-            render();
+            
+            // Actualizar meses disponibles
+            const mesesDisponibles = Object.keys(parametros[capital]).map(Number).sort((a,b) => a-b);
+            meses = mesesDisponibles[0];
+            
+            // Actualizar interés
+            interes = parametros[capital][meses];
+            
+            renderizar();
         }
 
-        // Event listener para botón flotante de WhatsApp
-        document.getElementById('whatsapp-float-btn').addEventListener('click', enviarWhatsApp);
+        function alCambiarMeses(e) {
+            meses = Number(e.target.value);
+            interes = parametros[capital][meses];
+            renderizar();
+        }
 
-        // Inicializar
-        cargarParametros();
+        // WHATSAPP
+        function enviarWhatsApp() {
+            const resultado = calcular();
+            
+            const mensaje = `*SOLICITUD DE PRÉSTAMO*
+
+💰 *Capital:* $${resultado.capital.toLocaleString('es-MX')}
+📅 *Plazo:* ${resultado.meses} meses (${resultado.diasPrestamo} días)
+📊 *Interés:* ${resultado.interes}% mensual
+
+*RESUMEN:*
+━━━━━━━━━━━━━━━━━━
+💵 Total a Pagar: $${resultado.totalPrestamo.toLocaleString('es-MX', {minimumFractionDigits: 2})}
+📆 Pago Diario: $${resultado.pagoDiario.toLocaleString('es-MX', {minimumFractionDigits: 2})}
+
+Deseo solicitar este préstamo.`;
+
+            const url = `https://wa.me/52${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
+        }
+
+        document.getElementById('whatsapp-btn').addEventListener('click', enviarWhatsApp);
+
+        // INICIAR
+        inicializar();
     </script>
 </body>
 </html>
