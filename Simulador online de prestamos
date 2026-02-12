@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simulador de Préstamos</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -100,36 +97,6 @@
             font-size: 0.9rem;
             color: #666;
             margin-top: 0.25rem;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: #e9ecef;
-            outline: none;
-            -webkit-appearance: none;
-        }
-
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #667eea;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
-        }
-
-        input[type="range"]::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: #667eea;
-            cursor: pointer;
-            border: none;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
         }
 
         select {
@@ -248,124 +215,107 @@
     </style>
 </head>
 <body>
-    <div id="root"></div>
+    <div class="container">
+        <div class="header">
+            <h1>💰 Simulador de Préstamos</h1>
+            <p>Calcula tu préstamo en segundos</p>
+        </div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+        <div id="loading" class="loading">⏳ Cargando parámetros...</div>
+        <div id="app" style="display:none;"></div>
+    </div>
 
-        // Configuración
+    <script>
         const GOOGLE_SHEET_ID = '19Viesr9Lhy347A9L03J_RuxftUhBduaYsBY206IO6X8';
         const WHATSAPP_NUMBER = '4424003376';
 
-        function App() {
-            const [parametros, setParametros] = useState(null);
-            const [loading, setLoading] = useState(true);
-            const [error, setError] = useState(null);
-            
-            const [capital, setCapital] = useState(5000);
-            const [meses, setMeses] = useState(3);
-            const [interes, setInteres] = useState(null);
+        let parametros = null;
+        let capital = 5000;
+        let meses = 3;
+        let interes = 0;
 
-            // Cargar parámetros de Google Sheets
-            useEffect(() => {
-                cargarParametros();
-            }, []);
-
-            const cargarParametros = async () => {
-                try {
-                    const url = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Parametros`;
-                    const response = await fetch(url);
-                    const text = await response.text();
-                    const json = JSON.parse(text.substring(47).slice(0, -2));
-                    
-                    const rows = json.table.rows;
-                    const params = {};
-                    
-                    rows.forEach(row => {
-                        if (row.c[0] && row.c[1]) {
-                            const interes = parseFloat(row.c[0].v);
-                            const meses = parseInt(row.c[1].v);
-                            const capital = parseFloat(row.c[2].v);
-                            
-                            if (!params[capital]) params[capital] = {};
-                            if (!params[capital][meses]) params[capital][meses] = interes;
-                        }
-                    });
-                    
-                    setParametros(params);
-                    
-                    // Establecer valores iniciales
-                    const capitales = Object.keys(params).map(Number).sort((a,b) => a-b);
-                    const capitalInicial = capitales[0] || 5000;
-                    setCapital(capitalInicial);
-                    
-                    const mesesDisponibles = Object.keys(params[capitalInicial] || {}).map(Number).sort((a,b) => a-b);
-                    const mesesInicial = mesesDisponibles[0] || 3;
-                    setMeses(mesesInicial);
-                    setInteres(params[capitalInicial]?.[mesesInicial] || 0);
-                    
-                    setLoading(false);
-                } catch (err) {
-                    console.error('Error al cargar parámetros:', err);
-                    setError('No se pudieron cargar los parámetros. Usando valores por defecto.');
-                    setParametros({
-                        5000: { 3: 16, 6: 20, 9: 12 },
-                        10000: { 3: 16, 6: 20, 9: 12 }
-                    });
-                    setInteres(16);
-                    setLoading(false);
-                }
-            };
-
-            // Actualizar interés cuando cambian capital o meses
-            useEffect(() => {
-                if (parametros && parametros[capital] && parametros[capital][meses]) {
-                    setInteres(parametros[capital][meses]);
-                }
-            }, [capital, meses, parametros]);
-
-            // Cálculos
-            const calcularPrestamo = () => {
-                if (!interes) return null;
-
-                const tasaMensual = interes / 100;
-                const totalInteres = capital * tasaMensual * meses;
-                const totalPrestamo = capital + totalInteres;
-                const diasPrestamo = meses * 30;
-                const totalPorDia = totalPrestamo / diasPrestamo;
-
-                // Guardar en localStorage
-                const simulacion = {
-                    fecha: new Date().toISOString(),
-                    capital,
-                    meses,
-                    interes,
-                    totalInteres,
-                    totalPrestamo,
-                    diasPrestamo,
-                    totalPorDia
-                };
+        async function cargarParametros() {
+            try {
+                const url = `https://docs.google.com/spreadsheets/d/${GOOGLE_SHEET_ID}/gviz/tq?tqx=out:json&sheet=Parametros`;
+                const response = await fetch(url);
+                const text = await response.text();
+                const json = JSON.parse(text.substring(47).slice(0, -2));
                 
-                const simulaciones = JSON.parse(localStorage.getItem('simulaciones') || '[]');
-                simulaciones.push(simulacion);
-                localStorage.setItem('simulaciones', JSON.stringify(simulaciones));
-
-                return {
-                    totalPorDia: totalPorDia.toFixed(2),
-                    diasPrestamo,
-                    meses,
-                    totalCapital: capital.toFixed(2),
-                    totalPrestamo: totalPrestamo.toFixed(2),
-                    totalInteres: totalInteres.toFixed(2)
+                const rows = json.table.rows;
+                parametros = {};
+                
+                rows.forEach(row => {
+                    if (row.c[0] && row.c[1] && row.c[2]) {
+                        const interesVal = parseFloat(row.c[0].v);
+                        const mesesVal = parseInt(row.c[1].v);
+                        const capitalVal = parseFloat(row.c[2].v);
+                        
+                        if (!parametros[capitalVal]) parametros[capitalVal] = {};
+                        parametros[capitalVal][mesesVal] = interesVal;
+                    }
+                });
+                
+                const capitales = Object.keys(parametros).map(Number).sort((a,b) => a-b);
+                capital = capitales[0] || 5000;
+                
+                const mesesDisponibles = Object.keys(parametros[capital] || {}).map(Number).sort((a,b) => a-b);
+                meses = mesesDisponibles[0] || 3;
+                interes = parametros[capital]?.[meses] || 0;
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                render();
+            } catch (err) {
+                console.error('Error:', err);
+                parametros = {
+                    5000: { 3: 16, 6: 20, 9: 12 },
+                    10000: { 3: 16, 6: 20, 9: 12, 12: 10 }
                 };
+                capital = 5000;
+                meses = 3;
+                interes = 16;
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('app').style.display = 'block';
+                render();
+            }
+        }
+
+        function calcularPrestamo() {
+            const tasaMensual = interes / 100;
+            const totalInteres = capital * tasaMensual * meses;
+            const totalPrestamo = capital + totalInteres;
+            const diasPrestamo = meses * 30;
+            const totalPorDia = totalPrestamo / diasPrestamo;
+
+            const simulacion = {
+                fecha: new Date().toISOString(),
+                capital,
+                meses,
+                interes,
+                totalInteres,
+                totalPrestamo,
+                diasPrestamo,
+                totalPorDia
             };
+            
+            const simulaciones = JSON.parse(localStorage.getItem('simulaciones') || '[]');
+            simulaciones.push(simulacion);
+            localStorage.setItem('simulaciones', JSON.stringify(simulaciones));
 
+            return {
+                totalPorDia: totalPorDia.toFixed(2),
+                diasPrestamo,
+                meses,
+                totalCapital: capital.toFixed(2),
+                totalPrestamo: totalPrestamo.toFixed(2),
+                totalInteres: totalInteres.toFixed(2)
+            };
+        }
+
+        function enviarWhatsApp() {
             const resultado = calcularPrestamo();
-
-            const enviarWhatsApp = () => {
-                if (!resultado) return;
-
-                const mensaje = `*SOLICITUD DE PRÉSTAMO*
+            
+            const mensaje = `*SOLICITUD DE PRÉSTAMO*
 
 💰 *Capital Solicitado:* $${parseFloat(resultado.totalCapital).toLocaleString('es-MX')}
 📅 *Plazo:* ${resultado.meses} meses (${resultado.diasPrestamo} días)
@@ -379,111 +329,108 @@
 
 Deseo solicitar este préstamo.`;
 
-                const url = `https://wa.me/52${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
-                window.open(url, '_blank');
-            };
-
-            if (loading) {
-                return <div className="loading">⏳ Cargando parámetros...</div>;
-            }
-
-            const capitalesDisponibles = parametros ? Object.keys(parametros).map(Number).sort((a,b) => a-b) : [];
-            const mesesDisponibles = parametros && parametros[capital] ? Object.keys(parametros[capital]).map(Number).sort((a,b) => a-b) : [];
-
-            return (
-                <div className="container">
-                    <div className="header">
-                        <h1>💰 Simulador de Préstamos</h1>
-                        <p>Calcula tu préstamo en segundos</p>
-                    </div>
-
-                    <div className="card">
-                        {error && <div className="error">{error}</div>}
-
-                        <div className="form-group">
-                            <label>💵 ¿Cuánto necesitas?</label>
-                            <div className="value-display">
-                                <div className="amount">${capital.toLocaleString('es-MX')}</div>
-                                <div className="label">Capital a solicitar</div>
-                            </div>
-                            {capitalesDisponibles.length > 0 && (
-                                <select 
-                                    value={capital} 
-                                    onChange={(e) => setCapital(Number(e.target.value))}
-                                >
-                                    {capitalesDisponibles.map(c => (
-                                        <option key={c} value={c}>
-                                            ${c.toLocaleString('es-MX')}
-                                        </option>
-                                    ))}
-                                </select>
-                            )}
-                        </div>
-
-                        <div className="form-group">
-                            <label>📅 ¿En cuántos meses?</label>
-                            <div className="value-display">
-                                <div className="amount">{meses}</div>
-                                <div className="label">Meses de plazo</div>
-                            </div>
-                            {mesesDisponibles.length > 0 && (
-                                <select 
-                                    value={meses} 
-                                    onChange={(e) => setMeses(Number(e.target.value))}
-                                >
-                                    {mesesDisponibles.map(m => (
-                                        <option key={m} value={m}>
-                                            {m} {m === 1 ? 'mes' : 'meses'}
-                                        </option>
-                                    ))}
-                                </select>
-                            )}
-                        </div>
-
-                        <div className="form-group">
-                            <label>📊 Tasa de interés aplicable</label>
-                            <div className="value-display">
-                                <div className="amount">{interes}%</div>
-                                <div className="label">Mensual</div>
-                            </div>
-                        </div>
-
-                        {resultado && (
-                            <div className="results">
-                                <h3>📋 Resumen de tu Préstamo</h3>
-                                
-                                <div className="result-item highlight">
-                                    <div className="label">💰 Total a Pagar</div>
-                                    <div className="value">${parseFloat(resultado.totalPrestamo).toLocaleString('es-MX')}</div>
-                                </div>
-
-                                <div className="result-item">
-                                    <div className="label">📆 Pago por Día</div>
-                                    <div className="value">${parseFloat(resultado.totalPorDia).toLocaleString('es-MX')}</div>
-                                </div>
-
-                                <div className="result-item">
-                                    <div className="label">⏱️ Días del Préstamo</div>
-                                    <div className="value">{resultado.diasPrestamo} días</div>
-                                </div>
-
-                                <div className="result-item">
-                                    <div className="label">📈 Total de Intereses</div>
-                                    <div className="value">${parseFloat(resultado.totalInteres).toLocaleString('es-MX')}</div>
-                                </div>
-
-                                <button className="whatsapp-btn" onClick={enviarWhatsApp}>
-                                    <span className="icon">📱</span>
-                                    Solicitar por WhatsApp
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            );
+            const url = `https://wa.me/52${WHATSAPP_NUMBER}?text=${encodeURIComponent(mensaje)}`;
+            window.open(url, '_blank');
         }
 
-        ReactDOM.render(<App />, document.getElementById('root'));
+        function onCapitalChange(e) {
+            capital = Number(e.target.value);
+            const mesesDisponibles = Object.keys(parametros[capital] || {}).map(Number).sort((a,b) => a-b);
+            meses = mesesDisponibles[0] || 3;
+            interes = parametros[capital]?.[meses] || 0;
+            render();
+        }
+
+        function onMesesChange(e) {
+            meses = Number(e.target.value);
+            interes = parametros[capital]?.[meses] || 0;
+            render();
+        }
+
+        function render() {
+            const capitalesDisponibles = Object.keys(parametros).map(Number).sort((a,b) => a-b);
+            const mesesDisponibles = parametros[capital] ? Object.keys(parametros[capital]).map(Number).sort((a,b) => a-b) : [];
+            const resultado = calcularPrestamo();
+
+            const html = `
+                <div class="card">
+                    <div class="form-group">
+                        <label>💵 ¿Cuánto necesitas?</label>
+                        <div class="value-display">
+                            <div class="amount">$${capital.toLocaleString('es-MX')}</div>
+                            <div class="label">Capital a solicitar</div>
+                        </div>
+                        <select id="capital-select">
+                            ${capitalesDisponibles.map(c => `
+                                <option value="${c}" ${c === capital ? 'selected' : ''}>
+                                    $${c.toLocaleString('es-MX')}
+                                </option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📅 ¿En cuántos meses?</label>
+                        <div class="value-display">
+                            <div class="amount">${meses}</div>
+                            <div class="label">Meses de plazo</div>
+                        </div>
+                        <select id="meses-select">
+                            ${mesesDisponibles.map(m => `
+                                <option value="${m}" ${m === meses ? 'selected' : ''}>
+                                    ${m} ${m === 1 ? 'mes' : 'meses'}
+                                </option>
+                            `).join('')}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>📊 Tasa de interés aplicable</label>
+                        <div class="value-display">
+                            <div class="amount">${interes}%</div>
+                            <div class="label">Mensual</div>
+                        </div>
+                    </div>
+
+                    <div class="results">
+                        <h3>📋 Resumen de tu Préstamo</h3>
+                        
+                        <div class="result-item highlight">
+                            <div class="label">💰 Total a Pagar</div>
+                            <div class="value">$${parseFloat(resultado.totalPrestamo).toLocaleString('es-MX')}</div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="label">📆 Pago por Día</div>
+                            <div class="value">$${parseFloat(resultado.totalPorDia).toLocaleString('es-MX')}</div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="label">⏱️ Días del Préstamo</div>
+                            <div class="value">${resultado.diasPrestamo} días</div>
+                        </div>
+
+                        <div class="result-item">
+                            <div class="label">📈 Total de Intereses</div>
+                            <div class="value">$${parseFloat(resultado.totalInteres).toLocaleString('es-MX')}</div>
+                        </div>
+
+                        <button class="whatsapp-btn" id="whatsapp-btn">
+                            <span class="icon">📱</span>
+                            Solicitar por WhatsApp
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('app').innerHTML = html;
+            
+            document.getElementById('capital-select').addEventListener('change', onCapitalChange);
+            document.getElementById('meses-select').addEventListener('change', onMesesChange);
+            document.getElementById('whatsapp-btn').addEventListener('click', enviarWhatsApp);
+        }
+
+        cargarParametros();
     </script>
 </body>
 </html>
